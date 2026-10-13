@@ -1,0 +1,36 @@
+Training connections at each gateway (non-IID):
+           Normal    DoS  Probe  R2L  U2R
+Gateway 1       0  31189    278  181    0
+Gateway 2   31232   3911    913    0   23
+Gateway 3       0   1526   5341    9    1
+Gateway 4   22529    113     28  542    0
+Gateway 5     113      2   2765   64   18
+
+Inputs per connection: 122  |  raw data stays at the gateway; only sums are shared for scaling
+Trained local, centralised and federated models in 39 s
+
+Each gateway alone:
+                 Model  Macro-F1 (known attacks)  Accuracy (known)  Macro-F1 (KDDTest+)  Accuracy (KDDTest+)
+Local only - Gateway 1                     0.302             0.463                0.323                0.434
+Local only - Gateway 2                     0.717             0.989                0.499                0.757
+Local only - Gateway 3                     0.309             0.464                0.289                0.428
+Local only - Gateway 4                     0.726             0.951                0.462                0.712
+Local only - Gateway 5                     0.351             0.551                0.408                0.542
+
+Summary:
+                             Model  Macro-F1 (known attacks)  Accuracy (known)  Macro-F1 (KDDTest+)  Accuracy (KDDTest+)
+Local only (average of 5 gateways)                     0.481             0.684                0.396                0.574
+                Federated (FedAvg)                     0.862             0.995                0.569                0.785
+     Centralised (all data pooled)                     0.920             0.998                0.609                0.794
+
+Recall per attack family (known-attack test set):
+Family  Local (avg)  Federated  Centralised
+Normal        0.565      0.995        0.997
+   DoS        0.793      1.000        1.000
+ Probe        0.929      0.985        0.998
+   R2L        0.765      0.965        0.960
+   U2R        0.280      0.300        0.900
+
+Communication: 10,117 parameters -> 0.40 MB per round (12.1 MB total) vs 98.4 MB of raw features that never left the gateways
+
+All results saved in the 'results' folder.
